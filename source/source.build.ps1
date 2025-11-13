@@ -24,7 +24,7 @@ function dedup([string]$Path) {
         $safeFiles = @{}
         $first = $list[0]
         Write-Host "  --$($first | Split-Path -Leaf)" -NoNewline
-        Get-ChildItem -Path $first |
+        Get-ChildItem -Path $first -File |
             Where-Object Name -ne "System.Data.SQLite.dll" | #always exclude this SQLite dll because of native interop binding
             Where-Object Name -ne "SQLite.Interop.dll" | #always exclude this SQLite dll because of native interop binding
             Get-FileHash |
