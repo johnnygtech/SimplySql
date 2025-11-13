@@ -10,6 +10,7 @@ $Script:envList = @(
     [PSCustomObject]@{framework="net6.0"; env="win-x64"; output="output\bin\PS7\win-x64"}
     [PSCustomObject]@{framework="net6.0"; env="linux-x64"; output="output\bin\PS7\linux-x64"}
     [PSCustomObject]@{framework="net6.0"; env="osx-x64"; output="output\bin\PS7\osx-x64"}
+    [PSCustomObject]@{framework="net6.0"; env="osx-arm64";   output="output\bin\PS7\osx-arm64"}
 )
 
 function dedup([string]$Path) {
