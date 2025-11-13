@@ -1,5 +1,5 @@
 param([version]$Version, [switch]$CommitRevision, [ValidateSet("Major", "Minor", "Build")][string]$Increment)
-New-Alias -Name HV -Value (Resolve-Path HandleVerbose.ps1)
+New-Alias -Name HV -Value (Resolve-Path HandleVerbose.ps1) -Force
 
 if(-not $version) {
   $Script:Version = [Version](Import-PowerShellDataFile -Path "ModuleManifest\SimplySql.psd1")["ModuleVersion"]
