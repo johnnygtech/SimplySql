@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 Describe "Oracle" {
     BeforeAll {
         $srvName = $env:COMPUTERNAME
-        if([string]::IsNullOrWhiteSpace($srvName)) { $srvName = $env:NAME }  #pscore on non-windows
+        if([string]::IsNullOrWhiteSpace($srvName)) { $srvName = "{0}." -f $env:NAME }  #pscore on non-windows
         $u = "hr"
         $p = "hr"
         $c = [pscredential]::new($u, (ConvertTo-SecureString -Force -AsPlainText $p))        

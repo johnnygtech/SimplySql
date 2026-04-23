@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 Describe "MSSQL" {
     BeforeAll {
         $srvName = "$($env:COMPUTERNAME)\SQLEXPRESS"
-        if($srvName -eq "\SQLEXPRESS") { $srvName = "$($env:NAME)\SQLEXPRESS" }  #pscore on non-windows
+        if($srvName -eq "\SQLEXPRESS") { $srvName = "$($env:NAME).\SQLEXPRESS" }  #pscore on non-windows
         $c = [pscredential]::new("simplysql", (ConvertTo-SecureString -Force -AsPlainText "simplysql"))
         $connHT = @{
             DataSource = $srvName

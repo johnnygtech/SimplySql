@@ -5,7 +5,7 @@ Describe "PostGre" {
     BeforeAll {
         #warm up connection
         $srvName = $env:COMPUTERNAME  #pscore on non-windows
-        if([string]::IsNullOrWhiteSpace($srvName)) { $srvName = $env:NAME }
+        if([string]::IsNullOrWhiteSpace($srvName)) { $srvName = "{0}." -f $env:NAME }
         $u = "postgres"
         $p = "postgres"
         $db = "postgres"
