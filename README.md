@@ -44,6 +44,9 @@ This module requires PowerShell Version 5.0 or greater
 - PostgreSQL : [Npgsql (8.0.6)](https://www.nuget.org/packages/Npgsql/8.0.6)
 
 ## Latest Version
+## 2.2.0
+* Added support for OSX-ARM64 thanks to @johnnygtech
+
 ## 2.1.0
 * Updated some packages that had vulnerabilities
 * Updated Provider Packages

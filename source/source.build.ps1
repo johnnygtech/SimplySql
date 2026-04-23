@@ -74,7 +74,7 @@ task Build {
     exec { dotnet publish "SimplySql.Cmdlets" -c $configuration -o "output\bin" -p:Version=$Version -p:AssemblyVersion=$version} | HV "Building SimplySql.Cmdlets ($version)" "."
     
     Move-Item "output\bin\SimplySql.Cmdlets.*" -Destination "output"
-    Remove-Item "output\bin\*" #-Exclude "SimplySql.*" -Recurse
+    Remove-Item "output\bin\*" -Recurse #-Exclude "SimplySql.*" -Recurse
 
     if($DebugOnly) { $Script:envList = $Script:envList | Where-Object env -eq "win-x64" }
     foreach($env in $Script:envList) {
