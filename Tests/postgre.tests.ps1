@@ -127,6 +127,16 @@ Describe "PostGre" {
 
             Close-SqlConnection -ConnectionName bcp
         }
+
+        It "With -ColumnMap" {
+            Invoke-SqlUpdate -Query "SELECT * INTO tmpTable23 FROM tmpTable WHERE 1=2"
+            Open-PostGreConnection -Server $srvName -Database $db -ConnectionName bcp -Credential $c
+            
+            $columns = @{colDec = "colDev"; colInt = "colInt"; colText = "colText"}
+            Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceTable tmpTable -DestinationTable tmpTable2 -ColumnMap $columns |
+            Should -Be 65536
+            Close-SqlConnection -ConnectionName bcp
+        }
     }
 
     Context "Transaction..." {
