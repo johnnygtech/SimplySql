@@ -144,6 +144,16 @@ Describe "MSSQL" {
             Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceTable tmpTable -DestinationTable tmpTable2 -NotifyAction { param($rows) $result.val = $rows }
             $result.val | Should -Be 65536
         }
+        
+        It "With -ColumnMap" {
+            Invoke-SqlUpdate -Query "SELECT * INTO tmpTable2 FROM tmpTable WHERE 1=2"
+            Open-SqlConnection @connHT -ConnectionName bcp 
+            Set-SqlConnection -Database test -ConnectionName bcp
+        
+            $columns = @{colDec = "colDev"; colInt = "colInt"; colText = "colText"}
+            Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceTable tmpTable -DestinationTable tmpTable2 -ColumnMap @columns |
+            Should -Be 65536
+        }
     }
 
     Context "Transaction..." {

@@ -171,6 +171,21 @@ Describe "MySql" {
             Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceQuery $query -DestinationTable "$db.tmpTable21" -NotifyAction { param($rows) $result.val = $rows }
             $result.val | Should -Be 65536
         }
+
+        It "With -ColumnMap" {
+            It "Normal" {
+            $query = "SELECT rand() AS colDec
+                , CAST(rand() * 1000000000 AS SIGNED) AS colInt
+                , uuid() AS colText
+            FROM $db.generator_64k"
+        
+            Open-MySqlConnection -ConnectionName bcp -Server $srvName -Database mysql -Credential $c
+            Invoke-SqlUpdate -ConnectionName bcp -Query "CREATE TABLE $db.tmpTable2 (colDec REAL, colInt INTEGER, colText TEXT)"
+
+            $columns = @{colDec = "colDev"; colInt = "colInt"; colText = "colText"}
+            Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceQuery $query -DestinationTable "$db.tmpTable2" -ColumnMap @columns |
+            Should -Be 65536
+        }
     }
 
     Context "Transaction..." {
