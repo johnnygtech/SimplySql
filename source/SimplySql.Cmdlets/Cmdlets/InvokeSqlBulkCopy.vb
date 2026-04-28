@@ -50,11 +50,14 @@ Public Class InvokeSqlBulkCopy
         Else
             If ValidateConnection(SourceConnectionName) And ValidateConnection(DestinationConnectionName) Then
                 If Me.ShouldProcess(DestinationConnectionName, $"Execute bulkloading into '{DestinationTable}'") Then
-                    Dim singleQuery As String
+                    Dim singleQuery As String, columnDict As Dictionary(Of String, String)
+                    columnDict = ColumnMap?.Cast(Of DictionaryEntry).ToDictionary(Function(de) de.Key.ToString(), Function(de) de.Value.ToString())
 
                     If ParameterSetName = "table" Then
                         Dim queryColumns As String = "*"
-                        If ColumnMap IsNot Nothing Then queryColumns = String.Join(", ", ColumnMap.Keys) '.Cast(Of String)().ToArray())
+                        If columnDict IsNot Nothing Then
+                            queryColumns = String.Join(", ", columnDict.Keys.ToArray)
+                        End If
                         singleQuery = $"SELECT {queryColumns} FROM {SourceTable}"
 
                         If String.IsNullOrWhiteSpace(DestinationTable) Then DestinationTable = SourceTable
@@ -68,7 +71,7 @@ Public Class InvokeSqlBulkCopy
                         If NotifyAction Is Nothing AndAlso Notify.IsPresent Then
                             NotifyAction = Sub(x) WriteProgress(New ProgressRecord(0, "SimplySql BulkCopy", DestinationTable) With {.CurrentOperation = $"Insert {x} rows."})
                         End If
-                        WriteObject(Engine.GetConnection(DestinationConnectionName).BulkLoad(srcReader, DestinationTable, ColumnMap, BatchSize, BatchTimeout, notifyAction))
+                        WriteObject(Engine.GetConnection(DestinationConnectionName).BulkLoad(srcReader, DestinationTable, columnDict, BatchSize, BatchTimeout, NotifyAction))
                     Catch ex As Exception
                         ErrorOperationFailed(ex, DestinationConnectionName)
                     Finally

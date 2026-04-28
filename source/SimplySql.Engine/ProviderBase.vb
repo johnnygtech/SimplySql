@@ -163,7 +163,7 @@ Public MustInherit Class ProviderBase
 #End Region
 
 #Region "BulkLoad"
-    Public Overridable Function BulkLoad(dataReader As IDataReader, destinationTable As String, columnMap As Hashtable, batchSize As Integer, batchTimeout As Integer, notify As Action(Of Int64)) As Int64 Implements ISimplySqlProvider.BulkLoad
+    Public Overridable Function BulkLoad(dataReader As IDataReader, destinationTable As String, columnMap As Dictionary(Of String, String), batchSize As Integer, batchTimeout As Integer, notify As Action(Of Int64)) As Int64 Implements ISimplySqlProvider.BulkLoad
         If batchTimeout < 0 Then batchTimeout = CommandTimeout
         Dim batchIteration As Int64 = 0
         Dim ord As Integer = 0
@@ -175,8 +175,8 @@ Public MustInherit Class ProviderBase
         Next
 
         If columnMap IsNot Nothing AndAlso columnMap.Count > 0 Then
-            Dim columnMapDictionary As Dictionary(Of String, String) = columnMap.Cast(Of DictionaryEntry).ToDictionary(Function(x) x.Key.ToString, Function(x) x.Value.ToString)
-            schemaMap = schemaMap.Where(Function(x) columnMapDictionary.ContainsKey(x.SourceName)).Select(Function(x) New SchemaMapItem With {.Ordinal = x.Ordinal, .SourceName = x.SourceName, .DestinationName = columnMapDictionary(x.SourceName)})
+            'Dim columnMapDictionary As Dictionary(Of String, String) = columnMap.Cast(Of DictionaryEntry).ToDictionary(Function(x) x.Key.ToString, Function(x) x.Value.ToString)
+            schemaMap = schemaMap.Where(Function(x) columnMap.ContainsKey(x.SourceName)).Select(Function(x) New SchemaMapItem With {.Ordinal = x.Ordinal, .SourceName = x.SourceName, .DestinationName = columnMap.Item(x.SourceName)})
         End If
 
         Dim insertSql As String = String.Format("INSERT INTO {0} ([{1}]) VALUES (@Param{2})", destinationTable,
@@ -232,7 +232,7 @@ Public MustInherit Class ProviderBase
         Return batchIteration
     End Function
 
-    Friend Shared Function GenerateSchemaMap(dr As IDataReader, columnMap As Hashtable) As List(Of SchemaMapItem)
+    Friend Shared Function GenerateSchemaMap(dr As IDataReader, columnMap As Dictionary(Of String, String)) As List(Of SchemaMapItem)
         Dim schemaMap As New List(Of SchemaMapItem)
         Dim ord As Integer = 0
         For Each row In dr.GetSchemaTable().Select().OrderBy(Function(x) x("ColumnOrdinal"))
@@ -247,8 +247,7 @@ Public MustInherit Class ProviderBase
         Next
 
         If columnMap IsNot Nothing AndAlso columnMap.Count > 0 Then
-            Dim columnMapDictionary As Dictionary(Of String, String) = columnMap.Cast(Of DictionaryEntry).ToDictionary(Function(x) x.Key.ToString, Function(x) x.Value.ToString)
-            schemaMap = schemaMap.Where(Function(x) columnMapDictionary.ContainsKey(x.SourceName)).Select(Function(x) New SchemaMapItem With {.Ordinal = x.Ordinal, .SourceName = x.SourceName, .DestinationName = columnMapDictionary(x.SourceName)})
+            schemaMap = schemaMap.Where(Function(x) columnMap.ContainsKey(x.SourceName)).Select(Function(x) New SchemaMapItem With {.Ordinal = x.Ordinal, .SourceName = x.SourceName, .DestinationName = columnMap.Item(x.SourceName)})
         End If
         Return schemaMap
     End Function
