@@ -129,7 +129,7 @@ Describe "PostGre" {
         }
 
         It "With -ColumnMap" {
-            Invoke-SqlUpdate -Query "SELECT * INTO tmpTable23 FROM tmpTable WHERE 1=2"
+            Invoke-SqlUpdate -Query "SELECT * INTO tmpTable24 FROM tmpTable WHERE 1=2"
             Open-PostGreConnection -Server $srvName -Database $db -ConnectionName bcp -Credential $c
             
             $columns = @{colDec = "colDev"; colInt = "colInt"; colText = "colText"}

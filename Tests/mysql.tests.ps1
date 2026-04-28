@@ -183,7 +183,7 @@ Describe "MySql" {
                 Invoke-SqlUpdate -ConnectionName bcp -Query "CREATE TABLE $db.tmpTable22 (colDec REAL, colInt INTEGER, colText TEXT)"
 
                 $columns = @{colDec = "colDev"; colInt = "colInt"; colText = "colText"}
-                Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceQuery $query -DestinationTable "$db.tmpTable2" -ColumnMap @columns |
+                Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceQuery $query -DestinationTable "$db.tmpTable2" -ColumnMap $columns |
                 Should -Be 65536
             }
         }

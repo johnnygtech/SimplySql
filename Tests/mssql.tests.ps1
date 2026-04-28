@@ -151,7 +151,7 @@ Describe "MSSQL" {
             Set-SqlConnection -Database test -ConnectionName bcp
         
             $columns = @{colDec = "colDev"; colInt = "colInt"; colText = "colText"}
-            Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceTable tmpTable -DestinationTable tmpTable2 -ColumnMap @columns |
+            Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceTable tmpTable -DestinationTable tmpTable2 -ColumnMap $columns |
             Should -Be 65536
         }
     }
