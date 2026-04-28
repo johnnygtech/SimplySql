@@ -54,7 +54,7 @@ Public Class InvokeSqlBulkCopy
 
                     If ParameterSetName = "table" Then
                         Dim queryColumns As String = "*"
-                        If ColumnMap IsNot Nothing Then queryColumns = String.Join(", ", ColumnMap.Keys)
+                        If ColumnMap IsNot Nothing Then queryColumns = String.Join(", ", ColumnMap.Keys) '.Cast(Of String)().ToArray())
                         singleQuery = $"SELECT {queryColumns} FROM {SourceTable}"
 
                         If String.IsNullOrWhiteSpace(DestinationTable) Then DestinationTable = SourceTable
