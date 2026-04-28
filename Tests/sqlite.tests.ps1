@@ -182,7 +182,7 @@ Describe "SQLite" {
             Open-SQLiteConnection -ConnectionName bcp -DataSource "$home\temp.db"
             Invoke-SqlUpdate -ConnectionName bcp -Query "CREATE TABLE tmpTable23 (colDec REAL, colInt INTEGER, colText TEXT)"
 
-            $columns = @{colDec = "colDev"; colInt = "colInt"; colText = "colText"}
+            $columns = @{colDec = "colDec"; colInt = "colInt"; colText = "colText"}
             Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceQuery $query -DestinationTable tmpTable -ColumnMap $columns |
             Should -Be 65536
         

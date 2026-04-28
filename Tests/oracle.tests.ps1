@@ -179,7 +179,7 @@ Describe "Oracle" {
             Open-OracleConnection -ConnectionName bcp -DataSource $srvName -ServiceName xe -Credential $c
             Invoke-SqlUpdate -ConnectionName bcp -Query "CREATE TABLE tmpTable2 (colDec NUMBER(38,10), colInt INTEGER, colText varchar(20))"
 
-            $columns = @{colDec = "colDev"; colInt = "colInt"; colText = "colText"}
+            $columns = @{colDec = "colDec"; colInt = "colInt"; colText = "colText"}
             Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceQuery $query -DestinationTable tmpTable2 -ColumnMap $columns |
             Should -Be 65536
         
