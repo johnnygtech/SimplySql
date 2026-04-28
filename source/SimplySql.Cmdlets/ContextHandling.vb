@@ -31,9 +31,9 @@ Public Class ContextHandling
     Private Shared Function HandleResolveEvent(ByVal sender As Object, ByVal args As ResolveEventArgs) As Assembly
         Dim asmName = New AssemblyName(args.Name)
 
-#If DEBUG Then
-        Console.WriteLine($"{Environment.NewLine}ASSEMBLY LOAD: '{asmName}' BECAUSE '{args.RequestingAssembly}'{Environment.NewLine}")
-#End If
+        '#If DEBUG Then
+        'Console.WriteLine($"{Environment.NewLine}ASSEMBLY LOAD: '{asmName}' BECAUSE '{args.RequestingAssembly}'{Environment.NewLine}")
+        '#End If
 
         If asmName.Name.Equals("SimplySql.Engine", StringComparison.OrdinalIgnoreCase) Then
             Dim asmPath = FindFile(asmName.Name)
