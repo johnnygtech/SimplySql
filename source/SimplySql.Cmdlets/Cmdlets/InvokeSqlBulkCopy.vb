@@ -50,8 +50,14 @@ Public Class InvokeSqlBulkCopy
         Else
             If ValidateConnection(SourceConnectionName) And ValidateConnection(DestinationConnectionName) Then
                 If Me.ShouldProcess(DestinationConnectionName, $"Execute bulkloading into '{DestinationTable}'") Then
-                    Dim singleQuery As String, columnDict As Dictionary(Of String, String)
-                    columnDict = ColumnMap?.Cast(Of DictionaryEntry).ToDictionary(Function(de) de.Key.ToString(), Function(de) de.Value.ToString())
+                    Dim singleQuery As String, columnDict As New Dictionary(Of String, String)(StringComparer.OrdinalIgnoreCase)
+                    If ColumnMap IsNot Nothing Then
+                        For Each de As DictionaryEntry In ColumnMap
+                            columnDict.Add(de.Key.ToString, de.Value.ToString)
+                        Next
+                    Else
+                        columnDict = Nothing
+                    End If
 
                     If ParameterSetName = "table" Then
                         Dim queryColumns As String = "*"
