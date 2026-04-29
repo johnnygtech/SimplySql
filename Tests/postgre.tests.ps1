@@ -133,7 +133,7 @@ Describe "PostGre" {
             Open-PostGreConnection -Server $srvName -Database $db -ConnectionName bcp -Credential $c
             
             $columns = @{colDec = "colDec"; colInt = "colInt"; colText = "colText"}
-            Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceTable tmpTable -DestinationTable tmpTable2 -ColumnMap $columns |
+            Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceTable tmpTable -DestinationTable tmpTable24 -ColumnMap $columns |
             Should -Be 65536
             Close-SqlConnection -ConnectionName bcp
         }
