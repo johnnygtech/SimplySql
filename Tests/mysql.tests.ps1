@@ -33,6 +33,7 @@ Describe "MySql" {
                         DROP TABLE IF EXISTS $db.tmpTable2;
                         DROP TABLE IF EXISTS $db.tmpTable20;
                         DROP TABLE IF EXISTS $db.tmpTable21;
+                        DROP TABLE IF EXISTS $db.tmpTable22;
                         DROP TABLE IF EXISTS $db.tmpTable3;
                         DROP TABLE IF EXISTS $db.tmpPK;
                         DROP VIEW IF EXISTS $db.generator_64k;
@@ -51,10 +52,10 @@ Describe "MySql" {
     }
 
     It "UserName/Password Are Removed" {
-        <#{
+        {
             Open-MySqlConnection -Server $srvName -UserName $u -Password $p -Database $db -ConnectionName test
             Close-SqlConnection -ConnectionName test
-        } | Should -Throw#>
+        } | Should -Throw
     }
 
     It "Invoke-SqlScalar" {

@@ -15,7 +15,7 @@ Describe "PostGre" {
     }
     AfterAll {
         Open-PostGreConnection -Server $srvName -Database $db -Credential $c
-        Invoke-SqlUpdate "DROP TABLE IF EXISTS transactionTest, tmpTable, tmpTable2, tmpTable21, tmpTable22, t, tmpPK;"
+        Invoke-SqlUpdate "DROP TABLE IF EXISTS transactionTest, tmpTable, tmpTable2, tmpTable21, tmpTable22, tmpTable23, t, tmpPK;"
         Close-SqlConnection
     }
 
@@ -129,12 +129,13 @@ Describe "PostGre" {
         }
 
         It "With -ColumnMap" {
-            Invoke-SqlUpdate -Query "SELECT * INTO tmpTable24 FROM tmpTable WHERE 1=2"
+            Invoke-SqlUpdate -Query "SELECT * INTO tmpTable23 FROM tmpTable WHERE 1=2"
             Open-PostGreConnection -Server $srvName -Database $db -ConnectionName bcp -Credential $c
             
             $columns = @{colDec = "colDec"; colInt = "colInt"; colText = "colText"}
-            Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceTable tmpTable -DestinationTable tmpTable24 -ColumnMap $columns |
+            Invoke-SqlBulkCopy -DestinationConnectionName bcp -SourceTable tmpTable -DestinationTable tmpTable23 -ColumnMap $columns |
             Should -Be 65536
+            
             Close-SqlConnection -ConnectionName bcp
         }
     }
